@@ -83,10 +83,7 @@ disk: 2048
 hooks:
   build: |
     set -e
-    if [ -d "${PLATFORM_CACHE_DIR}/phpredis/" ]; then
-      echo "deleting the old cache of phpredis"
-      rm -rf "${PLATFORM_CACHE_DIR}/phpredis/"
-    fi
+
     bash install-redis.sh 5.3.7
 
     # This is needed for the installer in the deploy hook.
