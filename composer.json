@@ -8,7 +8,9 @@
     "process-timeout": 0
   },
   "require": {
-    "pimcore/pimcore": "10.x-dev"
+    "pimcore/pimcore": "^10.4",
+    "doctrine/orm": "^2.7",
+    "platformsh/config-reader": "^2.3"
   },
   "require-dev": {
     "codeception/codeception": "^4.1.12"
