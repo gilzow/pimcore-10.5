@@ -1,8 +1,8 @@
 imports:
 #   - { resource: parameters.yml } Secret loaded fromm parameters_platformsh.php
-    - { resource: './packages/security.yml' }
+    - { resource: packages/security.yaml }
     - { resource: parameters_platformsh.php }
-    - { resource: services.yml }
+    - { resource: services.yaml }
     - { resource: 'local/' }
 
 doctrine:
