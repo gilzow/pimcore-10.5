@@ -19,7 +19,7 @@ dependencies:
 # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
 # side is in the form `<service name>:<endpoint name>`.
 relationships:
-  database: "dba:mysql"
+  database: "dbb:mysql"
   redis: 'cache:redis'
 
 build:
@@ -54,7 +54,7 @@ mounts:
     "/web/pimcore":
       source: "local"
       source_path: "web_pimcore"
-    "/web/bundles":
+    "/public/bundles":
       source: "local"
       source_path: "web_bundles"
     "/config/local":
