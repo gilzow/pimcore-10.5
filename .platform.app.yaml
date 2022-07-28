@@ -77,7 +77,7 @@ web:
           allow: true
 
 # The size of the persistent disk of the application (in MB).
-disk: 2048
+disk: 7168
 
 # The hooks executed at various points in the lifecycle of the application.
 hooks:
