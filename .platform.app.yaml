@@ -57,7 +57,7 @@ mounts:
     "/web/bundles":
       source: "local"
       source_path: "web_bundles"
-    "/app/config/local":
+    "/config/local":
       source: "local"
       source_path: "config_local"
 
