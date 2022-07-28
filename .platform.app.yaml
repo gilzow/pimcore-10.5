@@ -65,7 +65,7 @@ mounts:
 web:
   locations:
     '/':
-      root: web
+      root: public
       passthru: "/index.php"
       allow: true
       rules:
