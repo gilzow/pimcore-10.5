@@ -150,7 +150,6 @@ hooks:
       rm "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44.tar.gz"
       cd "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/"
       perl Makefile.PL
-      #perl "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/Makefile.PL"
     fi
     
     #make sure we have a bin in .global
