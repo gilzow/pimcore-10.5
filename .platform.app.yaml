@@ -145,9 +145,10 @@ hooks:
     if [ ! -d "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44" ]; then
       wget -P "${PLATFORM_CACHE_DIR}" https://exiftool.org/Image-ExifTool-12.44.tar.gz
       tar -xvf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44.tar.gz"
+      ls -al "${PLATFORM_CACHE_DIR}"
       # get rid of the archive since we've cached the contents
       rm "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44.tar.gz"
-      ls -al "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/Makefile.PL"
+      ls -al "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/"
       cd "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/"
       perl Makefile.PL
       #perl "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/Makefile.PL"
