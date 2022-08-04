@@ -147,7 +147,10 @@ hooks:
       tar -xvf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44.tar.gz"
       # get rid of the archive since we've cached the contents
       rm "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44.tar.gz"
-      perl "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/Makefile.PL"
+      ls -al "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/Makefile.PL"
+      cd "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/"
+      perl Makefile.PL
+      #perl "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/Makefile.PL"
     fi
     
     #make sure we have a bin in .global
