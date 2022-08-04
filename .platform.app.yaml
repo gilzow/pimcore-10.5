@@ -176,5 +176,5 @@ hooks:
 # The configuration of scheduled execution.
 crons:
     pimcore_cron:
-        spec: "*/5 * * * *"
+        spec: "*/19 * * * *"
         cmd: "bin/console maintenance"
