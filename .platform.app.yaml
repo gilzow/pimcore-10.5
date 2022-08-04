@@ -140,6 +140,21 @@ hooks:
       chmod a+x "${PLATFORM_CACHE_DIR}/facedetect"
     fi
     cp -vf "${PLATFORM_CACHE_DIR}/facedetect" "${PLATFORM_APP_DIR}/.libreoffice/bin/facedetect"
+      
+    #next is exiftool
+    if [ ! -d "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44" ]; then
+      wget -P "${PLATFORM_CACHE_DIR}" https://exiftool.org/Image-ExifTool-12.44.tar.gz
+      tar -xvf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44.tar.gz"
+      # get rid of the archive since we've cached the contents
+      rm "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44.tar.gz"
+      perl "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/Makefile.PL
+    fi
+    
+    #make sure we have a bin in .global
+    mkdir -p "${PLATFORM_APP_DIR}/.global/bin"
+    cp -Rvf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/lib" "${PLATFORM_APP_DIR}/.global/bin"
+    cp -vf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/exiftool" "${PLATFORM_APP_DIR}/.global/bin"
+   
 
   deploy: |
     if [ ! -f web/var/.platform.installed ]; then
