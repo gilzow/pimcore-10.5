@@ -157,7 +157,22 @@ hooks:
     cp -Rvf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/lib" "${PLATFORM_APP_DIR}/.global/bin"
     cp -vf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/exiftool" "${PLATFORM_APP_DIR}/.global/bin"
    
-
+    #now Chromium!
+    if [ ! -d "${PLATFORM_CACHE_DIR}/chromium" ] || [ ! -d "${PLATFORM_CACHE_DIR}/chromium/.git"  ]; then
+      git clone https://github.com/scheib/chromium-latest-linux.git "${PLATFORM_CACHE_DIR}/chromium/"   
+    else 
+      git -C "${PLATFORM_CACHE_DIR}/chromium/" pull origin master
+    fi
+      
+    cd "${PLATFORM_CACHE_DIR}/chromium" 
+      
+    bash "${PLATFORM_CACHE_DIR}/chromium/update.sh"
+    printf "contents of %s:" "${PLATFORM_CACHE_DIR}/chromium"
+    ls -al "${PLATFORM_CACHE_DIR}/chromium"
+    #now we need to copy the contents of the symlink "latest" over into the app directory
+    mkdir -p "${PLATFORM_APP_DIR}/.global/bin/chromium"
+    cp -Rvf "${PLATFORM_CACHE_DIR}/chromium/latest/." "${PLATFORM_APP_DIR}/.global/bin/chromium"  
+    echo 'export PATH="'$PLATFORM_APP_DIR'/.global/bin/chromium${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.profile"
   deploy: |
     if [ ! -f web/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
