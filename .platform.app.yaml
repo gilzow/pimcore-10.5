@@ -173,6 +173,22 @@ hooks:
     mkdir -p "${PLATFORM_APP_DIR}/.global/bin/chromium"
     cp -Rvf "${PLATFORM_CACHE_DIR}/chromium/latest/." "${PLATFORM_APP_DIR}/.global/bin/chromium"  
     echo 'export PATH="'$PLATFORM_APP_DIR'/.global/bin/chromium${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.profile"
+      
+    # And last we have updating ImageMagik to v7
+    mkdir -p "${PLATFORM_APP_DIR}/.global/imagemagik7"
+    echo "downloading ImageMagik7 set-up scripts..."
+    wget -P "${PLATFORM_CACHE_DIR}" https://dist.1-2.dev/imei.sh
+    wget -P "${PLATFORM_CACHE_DIR}" https://dist.1-2.dev/imei.sh.sig
+    wget -P "${PLATFORM_CACHE_DIR}" https://dist.1-2.dev/imei.sh.pem
+    succeeds=$(openssl dgst -sha512 -verify "${PLATFORM_CACHE_DIR}/imei.sh.pem" -signature "${PLATFORM_CACHE_DIR}/imei.sh.sig" "${PLATFORM_CACHE_DIR}/imei.sh")
+    if [ "Verified OK" == "${succeeds}" ]; then
+      echo "verification of imagemagik installer succeeded."
+      chmod a+x "${PLATFORM_CACHE_DIR}/imei.sh"
+      echo "Running ImageMagik7 installation..."
+      "${PLATFORM_CACHE_DIR}/imei.sh" -- config-dir "${PLATFORM_APP_DIR}/.global/imagemagik7"
+    else
+      echo "failed verifying ImageMagik installer." 
+    fi
   deploy: |
     if [ ! -f web/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
