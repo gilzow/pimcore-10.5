@@ -181,7 +181,7 @@ hooks:
     wget -P "${PLATFORM_CACHE_DIR}" https://dist.1-2.dev/imei.sh.sig
     wget -P "${PLATFORM_CACHE_DIR}" https://dist.1-2.dev/imei.sh.pem
     succeeds=$(openssl dgst -sha512 -verify "${PLATFORM_CACHE_DIR}/imei.sh.pem" -signature "${PLATFORM_CACHE_DIR}/imei.sh.sig" "${PLATFORM_CACHE_DIR}/imei.sh")
-    if [ "Verified OK" == "${succeeds}" ]; then
+    if [ "Verified OK" = "${succeeds}" ]; then
       echo "verification of imagemagik installer succeeded."
       chmod a+x "${PLATFORM_CACHE_DIR}/imei.sh"
       echo "Running ImageMagik7 installation..."
