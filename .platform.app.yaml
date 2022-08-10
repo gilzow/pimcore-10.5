@@ -175,20 +175,42 @@ hooks:
     echo 'export PATH="'$PLATFORM_APP_DIR'/.global/bin/chromium${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
       
     # And last we have updating ImageMagik to v7
-    #mkdir -p "${PLATFORM_APP_DIR}/.global/imagemagik7"
-    #echo "downloading ImageMagik7 set-up scripts..."
-    #wget -P "${PLATFORM_CACHE_DIR}" https://dist.1-2.dev/imei.sh
-    #wget -P "${PLATFORM_CACHE_DIR}" https://dist.1-2.dev/imei.sh.sig
-    #wget -P "${PLATFORM_CACHE_DIR}" https://dist.1-2.dev/imei.sh.pem
-    #succeeds=$(openssl dgst -sha512 -verify "${PLATFORM_CACHE_DIR}/imei.sh.pem" -signature "${PLATFORM_CACHE_DIR}/imei.sh.sig" "${PLATFORM_CACHE_DIR}/imei.sh")
-    #if [ "Verified OK" = "${succeeds}" ]; then
-      #echo "verification of imagemagik installer succeeded."
-      #chmod a+x "${PLATFORM_CACHE_DIR}/imei.sh"
-      #echo "Running ImageMagik7 installation..."
-      #"${PLATFORM_CACHE_DIR}/imei.sh" -- config-dir "${PLATFORM_APP_DIR}/.global/imagemagik7"
-    #else
-      #echo "failed verifying ImageMagik installer." 
-    #fi
+    if [ ! -d "${PLATFORM_CACHE_DIR}/magick" ]; then 
+      mkdir -p "${PLATFORM_CACHE_DIR}/magick"
+    fi
+      
+    cd "${PLATFORM_CACHE_DIR}/magick"
+    
+    # Have we already extracted the files?  
+    if [ ! -d squashfs-root ]; then
+        echo "Retrieving updated imagick binaries..."
+        # ok do we even have the original appimage file?
+        if [ ! -f magick ]; then
+          echo "Retrieving imagick AppImage file..."
+          wget -P "${PLATFORM_CACHE_DIR}/magick" https://imagemagick.org/archive/binaries/magick
+          chmod a+x magick
+        fi
+      
+        # Extract the files
+        echo "Extracting imagick binaries from AppImage file..."
+        ./magick --appimage-extract
+        #remove the original download to free up some space
+        rm -f magick
+    fi
+      
+    # make sure we have a directory in the app location
+    echo "Creating imagick directory in app directory..."
+    mkdir -p "${PLATFORM_APP_DIR}/.imagick/bin"
+    mkdir -p "${PLATFORM_APP_DIR}/.imagick/lib"  
+      
+    #now copy our files from squashfs-root/usr/bin/ to 
+    printf "Copying imagick files from %s to %s... \n" "${PLATFORM_CACHE_DIR}/magick/squashfs-root/usr/" "${PLATFORM_APP_DIR}/.imagick/"
+    cp -Rvf ./squashfs-root/usr/bin/* "${PLATFORM_APP_DIR}/.imagick/bin"
+    cp -Rvf ./squashfs-root/usr/lib/* "${PLATFORM_APP_DIR}/.imagick/lib"
+    #last add PATH to PATH
+    echo "Adding imagick bin path to PATH"  
+    echo 'export PATH="'$PLATFORM_APP_DIR'/.imagick/bin/${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
+
   deploy: |
     if [ ! -f web/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
