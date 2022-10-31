@@ -117,7 +117,8 @@ hooks:
       # image hasnt been extracted. do we even have the image?
       if [ ! -f LibreOffice-still.basic-x86_64.AppImage ]; then
         echo "downloading LibreOffice appimage" 
-        wget https://libreoffice.soluzioniopen.com/stable/still/LibreOffice-still.basic-x86_64.AppImage
+        #wget https://libreoffice.soluzioniopen.com/stable/still/LibreOffice-still.basic-x86_64.AppImage
+        wget https://appimage.sys42.eu/LibreOffice-still.basic-x86_64.AppImage
       fi
      
       # make sure we can execute it 
