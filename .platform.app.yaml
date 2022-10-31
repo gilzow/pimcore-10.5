@@ -43,21 +43,25 @@ variables:
 
 # The 'mounts' describe writable, persistent filesystem mounts in the application.
 mounts:
+    # According to https://pimcore.com/docs/pimcore/current/Development_Documentation/Installation_and_Upgrade/System_Setup_and_Hosting/File_Permissions.html
+    # Pimcore should only need write access to ./var and ./public/var
     "/var":
       source: "local"
       source_path: "var"
-    "/web/var":
+    "/public/var":
       source: "local"
-      source_path: "web_var"
-    "/pimcore":
-      source: "local"
-      source_path: "pimcore"
-    "/web/pimcore":
-      source: "local"
-      source_path: "web_pimcore"
+      source_path: "public_var"
+    #"/pimcore":
+      #source: "local"
+      #source_path: "pimcore"
+    #"/web/pimcore":
+      #source: "local"
+      #source_path: "web_pimcore"
+    #The link above doesn't mention /public/bundles, but in testing we DO need it to be writable.
     "/public/bundles":
       source: "local"
       source_path: "web_bundles"
+    #similar to above, though its not mentioned, something needs to write database.yaml to this location
     "/config/local":
       source: "local"
       source_path: "config_local"
@@ -212,14 +216,14 @@ hooks:
     echo 'export PATH="'$PLATFORM_APP_DIR'/.imagick/bin/${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
 
   deploy: |
-    if [ ! -f web/var/.platform.installed ]; then
+    if [ ! -f public/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         # These values are for the inital setup only.  You really need to change them
         # after the site is installed.
         export PIMCORE_INSTALL_ADMIN_USERNAME='admin'
         export PIMCORE_INSTALL_ADMIN_PASSWORD='admin'
         ./vendor/bin/pimcore-install --no-interaction --ignore-existing-config --no-debug
-        touch web/var/.platform.installed
+        touch public/var/.platform.installed
     fi
 
     # Clear env cached
