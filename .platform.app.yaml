@@ -147,20 +147,20 @@ hooks:
     cp -vf "${PLATFORM_CACHE_DIR}/facedetect" "${PLATFORM_APP_DIR}/.libreoffice/bin/facedetect"
       
     #next is exiftool
-    if [ ! -d "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44" ]; then
-      wget -P "${PLATFORM_CACHE_DIR}" https://exiftool.org/Image-ExifTool-12.44.tar.gz
+    if [ ! -d "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47" ]; then
+      wget -P "${PLATFORM_CACHE_DIR}" https://exiftool.org/Image-ExifTool-12.47.tar.gz
       cd "${PLATFORM_CACHE_DIR}"
-      tar -xvf Image-ExifTool-12.44.tar.gz
+      tar -xvf Image-ExifTool-12.47.tar.gz
       # get rid of the archive since we've cached the contents
-      rm "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44.tar.gz"
-      cd "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/"
+      rm "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47.tar.gz"
+      cd "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47/"
       perl Makefile.PL
     fi
     
     #make sure we have a bin in .global
     mkdir -p "${PLATFORM_APP_DIR}/.global/bin"
-    cp -Rvf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/lib" "${PLATFORM_APP_DIR}/.global/bin"
-    cp -vf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.44/exiftool" "${PLATFORM_APP_DIR}/.global/bin"
+    cp -Rvf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47/lib" "${PLATFORM_APP_DIR}/.global/bin"
+    cp -vf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47/exiftool" "${PLATFORM_APP_DIR}/.global/bin"
    
     #now Chromium!
     if [ ! -d "${PLATFORM_CACHE_DIR}/chromium" ] || [ ! -d "${PLATFORM_CACHE_DIR}/chromium/.git"  ]; then
