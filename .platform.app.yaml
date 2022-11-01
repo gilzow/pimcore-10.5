@@ -40,16 +40,16 @@ runtime:
 variables:
   php:
     memory_limit: 128M
-      opcache.enable: 1 # enables the Opcache for PHP server
-      opcache.enable_cli: 1 # enables the Opcache for CLI mode
-      opcache.jit_buffer_size: 256M # JIT buffer memory size. 0 value disables the JIT compiler.
-      opcache.max_accelerated_files: 20000 # https://symfony.com/doc/current/performance.html#configure-opcache-for-maximum-performance
-      opcache.memory_consumption: 256 # https://symfony.com/doc/current/performance.html#configure-opcache-for-maximum-performance
-      opcache.validate_timestamps: 0 # https://symfony.com/doc/current/performance.html#don-t-check-php-files-timestamps
-      #opcache.preload: /app/config/preload.php #https://symfony.com/doc/current/performance.html#use-the-opcache-class-preloading
-      #opcache.preload_user: web # https://symfony.com/doc/current/performance.html#use-the-opcache-class-preloading
-      realpath_cache_size: 4096K # https://symfony.com/doc/current/performance.html#configure-the-php-realpath-cache
-      realpath_cache_ttl: 600 # https://symfony.com/doc/current/performance.html#configure-the-php-realpath-cache
+    opcache.enable: 1 # enables the Opcache for PHP server
+    opcache.enable_cli: 1 # enables the Opcache for CLI mode
+    opcache.jit_buffer_size: 256M # JIT buffer memory size. 0 value disables the JIT compiler.
+    opcache.max_accelerated_files: 20000 # https://symfony.com/doc/current/performance.html#configure-opcache-for-maximum-performance
+    opcache.memory_consumption: 256 # https://symfony.com/doc/current/performance.html#configure-opcache-for-maximum-performance
+    opcache.validate_timestamps: 0 # https://symfony.com/doc/current/performance.html#don-t-check-php-files-timestamps
+    #opcache.preload: /app/config/preload.php #https://symfony.com/doc/current/performance.html#use-the-opcache-class-preloading
+    #opcache.preload_user: web # https://symfony.com/doc/current/performance.html#use-the-opcache-class-preloading
+    realpath_cache_size: 4096K # https://symfony.com/doc/current/performance.html#configure-the-php-realpath-cache
+    realpath_cache_ttl: 600 # https://symfony.com/doc/current/performance.html#configure-the-php-realpath-cache
 
 
 # The 'mounts' describe writable, persistent filesystem mounts in the application.
