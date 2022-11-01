@@ -88,7 +88,9 @@ disk: 7168
 hooks:
   build: |
     set -e
-
+    echo "How much space is build cache taking up?"
+    du -sh "${PLATFORM_CACHE_DIR}"
+      
     bash install-redis.sh 5.3.7
 
     # This is needed for the installer in the deploy hook.
@@ -98,7 +100,9 @@ hooks:
       
     # install our pimcore dependencies that are not available in this container image      
     ./platform-scripts/install-brew-pack.sh gcc graphviz exiftool poppler poppler-utils ghostscript zopfli 
-      
+    echo "just finished doing brew installs"
+    echo "How much space is build cache taking up?"
+    du -sh "${PLATFORM_CACHE_DIR}"  
     # Make sure we have our target application directory created
     if [ ! -d "${PLATFORM_APP_DIR}/.libreoffice" ]; then
       echo "creating libreoffice directory"
@@ -131,6 +135,10 @@ hooks:
       #now let's delete the AppImage to free up some space
       rm LibreOffice-still.basic-x86_64.AppImage
     fi
+     
+    echo "Just finished getting libreoffice."
+    echo "How much space is build cache taking up?"
+    du -sh "${PLATFORM_CACHE_DIR}"
       
     # now copy the contents of squashfs-root/opt/libreoffice7.3/program/ to /app/.libreoffice/bin/
     echo "Copying libreoffice files to ${PLATFORM_APP_DIR}/.libreoffice/bin... Files copied: "
@@ -141,6 +149,10 @@ hooks:
       
     #add our libreoffice path to PATH
     echo 'export PATH="'$PLATFORM_APP_DIR'/.libreoffice/bin${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
+
+    echo "just finished up with libreoffice."
+    echo "How much space is build cache taking up?"
+    du -sh "${PLATFORM_CACHE_DIR}"
       
     #next up is facedetect. https://gitlab.com/wavexx/facedetect/-/tree/master/
     if [ ! -f "${PLATFORM_CACHE_DIR}/facedetect" ]; then
@@ -148,6 +160,10 @@ hooks:
       chmod a+x "${PLATFORM_CACHE_DIR}/facedetect"
     fi
     cp -vf "${PLATFORM_CACHE_DIR}/facedetect" "${PLATFORM_APP_DIR}/.libreoffice/bin/facedetect"
+
+    echo "Just finished facedetect."
+    echo "How much space is build cache taking up?"
+    du -sh "${PLATFORM_CACHE_DIR}"
       
     #next is exiftool
     if [ ! -d "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47" ]; then
@@ -159,6 +175,10 @@ hooks:
       cd "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47/"
       perl Makefile.PL
     fi
+      
+    echo "Just finished exiftool."
+    echo "How much space is build cache taking up?"
+    du -sh "${PLATFORM_CACHE_DIR}"
     
     #make sure we have a bin in .global
     mkdir -p "${PLATFORM_APP_DIR}/.global/bin"
@@ -181,6 +201,10 @@ hooks:
     mkdir -p "${PLATFORM_APP_DIR}/.global/bin/chromium"
     cp -Rvf "${PLATFORM_CACHE_DIR}/chromium/latest/." "${PLATFORM_APP_DIR}/.global/bin/chromium"  
     echo 'export PATH="'$PLATFORM_APP_DIR'/.global/bin/chromium${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
+
+    echo "Just finished chromium."
+    echo "How much space is build cache taking up?"
+    du -sh "${PLATFORM_CACHE_DIR}"
       
     # And last we have updating ImageMagik to v7
     if [ ! -d "${PLATFORM_CACHE_DIR}/magick" ]; then 
@@ -218,6 +242,10 @@ hooks:
     #last add PATH to PATH
     echo "Adding imagick bin path to PATH"  
     echo 'export PATH="'$PLATFORM_APP_DIR'/.imagick/bin/${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
+
+    echo "Just finished imagick."
+    echo "How much space is build cache taking up?"
+    du -sh "${PLATFORM_CACHE_DIR}"
 
   deploy: |
     if [ ! -f public/var/.platform.installed ]; then
