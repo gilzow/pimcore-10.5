@@ -90,6 +90,11 @@ hooks:
     set -e
     echo "How much space is being used?"
     df -h
+    
+    printf "Specifically in %s?\n" "${PLATFORM_CACHE_DIR}"
+    du -h "$PLATFORM_CACHE_DIR" --max-depth=1
+    printf "Now in %s?\n" "${PLATFORM_APP_DIR}"
+    du -h "$PLATFORM_APP_DIR" --max-depth=1
       
     bash install-redis.sh 5.3.7
 
@@ -102,7 +107,12 @@ hooks:
     ./platform-scripts/install-brew-pack.sh gcc graphviz exiftool poppler poppler-utils ghostscript zopfli 
     echo "just finished doing brew installs"
     echo "How much space is build cache taking up?"
-    df -h 
+    df -h
+    printf "Specifically in %s?\n" "${PLATFORM_CACHE_DIR}"
+    du -h "$PLATFORM_CACHE_DIR" --max-depth=1
+    printf "Now in %s?\n" "${PLATFORM_APP_DIR}"
+    du -h "$PLATFORM_APP_DIR" --max-depth=1
+    
     # Make sure we have our target application directory created
     if [ ! -d "${PLATFORM_APP_DIR}/.libreoffice" ]; then
       echo "creating libreoffice directory"
@@ -139,6 +149,11 @@ hooks:
     echo "Just finished getting libreoffice."
     echo "How much space is build cache taking up?"
     df -h 
+
+    printf "Specifically in %s?\n" "${PLATFORM_CACHE_DIR}"
+    du -h "$PLATFORM_CACHE_DIR" --max-depth=1
+    printf "Now in %s?\n" "${PLATFORM_APP_DIR}"
+    du -h "$PLATFORM_APP_DIR" --max-depth=1
       
     # now copy the contents of squashfs-root/opt/libreoffice7.3/program/ to /app/.libreoffice/bin/
     echo "Copying libreoffice files to ${PLATFORM_APP_DIR}/.libreoffice/bin... Files copied: "
@@ -153,6 +168,11 @@ hooks:
     echo "just finished up with libreoffice."
     echo "How much space is build cache taking up?"
     df -h 
+
+    printf "Specifically in %s?\n" "${PLATFORM_CACHE_DIR}"
+    du -h "$PLATFORM_CACHE_DIR" --max-depth=1
+    printf "Now in %s?\n" "${PLATFORM_APP_DIR}"
+    du -h "$PLATFORM_APP_DIR" --max-depth=1
       
     #next up is facedetect. https://gitlab.com/wavexx/facedetect/-/tree/master/
     if [ ! -f "${PLATFORM_CACHE_DIR}/facedetect" ]; then
@@ -164,6 +184,10 @@ hooks:
     echo "Just finished facedetect."
     echo "How much space is build cache taking up?"
     df -h 
+    printf "Specifically in %s?\n" "${PLATFORM_CACHE_DIR}"
+    du -h "$PLATFORM_CACHE_DIR" --max-depth=1
+    printf "Now in %s?\n" "${PLATFORM_APP_DIR}"
+    du -h "$PLATFORM_APP_DIR" --max-depth=1
       
     #next is exiftool
     if [ ! -d "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47" ]; then
@@ -179,6 +203,11 @@ hooks:
     echo "Just finished exiftool."
     echo "How much space is build cache taking up?"
     df -h
+
+    printf "Specifically in %s?\n" "${PLATFORM_CACHE_DIR}"
+    du -h "$PLATFORM_CACHE_DIR" --max-depth=1
+    printf "Now in %s?\n" "${PLATFORM_APP_DIR}"
+    du -h "$PLATFORM_APP_DIR" --max-depth=1
     
     #make sure we have a bin in .global
     mkdir -p "${PLATFORM_APP_DIR}/.global/bin"
@@ -205,6 +234,11 @@ hooks:
     echo "Just finished chromium."
     echo "How much space is build cache taking up?"
     df -h
+
+    printf "Specifically in %s?\n" "${PLATFORM_CACHE_DIR}"
+    du -h "$PLATFORM_CACHE_DIR" --max-depth=1
+    printf "Now in %s?\n" "${PLATFORM_APP_DIR}"
+    du -h "$PLATFORM_APP_DIR" --max-depth=1
       
     # And last we have updating ImageMagik to v7
     if [ ! -d "${PLATFORM_CACHE_DIR}/magick" ]; then 
@@ -246,6 +280,10 @@ hooks:
     echo "Just finished imagick."
     echo "How much space is build cache taking up?"
     df -h 
+    printf "Specifically in %s?\n" "${PLATFORM_CACHE_DIR}"
+    du -h "$PLATFORM_CACHE_DIR" --max-depth=1
+    printf "Now in %s?\n" "${PLATFORM_APP_DIR}"
+    du -h "$PLATFORM_APP_DIR" --max-depth=1
     
   deploy: |
     if [ ! -f public/var/.platform.installed ]; then
