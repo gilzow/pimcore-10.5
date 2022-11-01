@@ -98,7 +98,10 @@ write_profile() {
 
 check_for_environment() {
     if [[ ! -f "${PLATFORM_APP_DIR}/.environment" ]]; then
+        printf "%s does not exist. Creating... \n" "${PLATFORM_APP_DIR}/.environment"
         touch "${PLATFORM_APP_DIR}/.environment";
+    else
+        printf "%s already exists. Skipping... \n" "${PLATFORM_APP_DIR}/.environment"
     fi
 }
 
