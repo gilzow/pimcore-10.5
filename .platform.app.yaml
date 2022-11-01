@@ -40,6 +40,9 @@ runtime:
 variables:
   php:
       memory_limit: 128M
+      opcache.enable: 1 # enables the Opcache for PHP server
+      opcache.enable_cli: 1 # enables the Opcache for CLI mode
+      opcache.jit_buffer_size: 256M # JIT buffer memory size. 0 value disables the JIT compiler.
 
 # The 'mounts' describe writable, persistent filesystem mounts in the application.
 mounts:
