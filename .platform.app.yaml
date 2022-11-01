@@ -129,14 +129,17 @@ hooks:
     #with. still.basic is always the latest version of LibreOffice so that means the extracted directory name can change
     #as the version number changes.
     maybeLOdir=$(find . -type d -name "libreoffice*");
-    if [[ -z "${maybeLOdir}" ]]; then
+    printf "What I found for maybeLOdir is : %s\n" "${maybeLOdir}"
+    if [ -z "${maybeLOdir}" ]; then
       echo "I was unable to find the latest libreoffice directory in the extracted contents.";
       exit 1;
     else 
       libreOfficeDir=$(basename "${maybeLOdir}")
     fi
+    
+    printf "libreOfficeDir is now : %s \n" "${libreOfficeDir}"
 
-    # now copy the contents of squashfs-root/opt/"$libreOfficeDir".3/program/ to /app/.libreoffice/bin/
+    # now copy the contents of squashfs-root/opt/"$libreOfficeDir"/program/ to /app/.libreoffice/bin/
     echo "Copying libreoffice files to ${PLATFORM_APP_DIR}/.libreoffice/bin... Files copied: "
     # @todo, the libreoffice directory name can and WILL Change as the version changes. We need to either designate a
     # specic version, and then allow for a manged upgrade, or check the name of the directory after we run the 
@@ -167,8 +170,8 @@ hooks:
     
     #make sure we have a bin in .global
     mkdir -p "${PLATFORM_APP_DIR}/.global/bin"
-    cp -Rvf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47/lib" "${PLATFORM_APP_DIR}/.global/bin"
-    cp -vf "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47/exiftool" "${PLATFORM_APP_DIR}/.global/bin"
+    cp -Rvf "${PLATFORM_CACHE_DIR}/Image-ExifTool-${exifVersion}/lib" "${PLATFORM_APP_DIR}/.global/bin"
+    cp -vf "${PLATFORM_CACHE_DIR}/Image-ExifTool-${exifVersion}/exiftool" "${PLATFORM_APP_DIR}/.global/bin"
    
     #now Chromium!
     if [ ! -d "${PLATFORM_CACHE_DIR}/chromium" ] || [ ! -d "${PLATFORM_CACHE_DIR}/chromium/.git"  ]; then
