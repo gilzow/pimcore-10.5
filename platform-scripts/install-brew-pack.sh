@@ -87,12 +87,19 @@ install_component() {
 
 write_profile() {
   #touch /app/.profile
+  check_for_environment
   echo "" > $PLATFORM_APP_DIR/.environment
   echo 'export HOMEBREW_CELLAR="'$PLATFORM_APP_DIR'/.linuxbrew/Cellar";' >> $PLATFORM_APP_DIR/.environment
   echo 'export HOMEBREW_REPOSITORY="'$PLATFORM_APP_DIR'/.linuxbrew/Homebrew";' >> $PLATFORM_APP_DIR/.environment
   echo 'export PATH="'$PLATFORM_APP_DIR'/.linuxbrew/bin:'$PLATFORM_APP_DIR'/.linuxbrew/sbin${PATH+:$PATH}";' >> $PLATFORM_APP_DIR/.environment
   echo 'export MANPATH="'$PLATFORM_APP_DIR'/.linuxbrew/share/man${MANPATH+:$MANPATH}:";' >> $PLATFORM_APP_DIR/.environment
   echo 'export INFOPATH="'$PLATFORM_APP_DIR'/.linuxbrew/share/info:${INFOPATH:-}";' >> $PLATFORM_APP_DIR/.environment
+}
+
+check_for_environment() {
+    if [[ ! -f "${PLATFORM_APP_DIR}/.environment" ]]; then
+        touch "${PLATFORM_APP_DIR}/.environment";
+    fi
 }
 
 echo "Installing: $@"
