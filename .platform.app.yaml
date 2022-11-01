@@ -128,7 +128,7 @@ hooks:
     #now that we've extracted the contents of the image, we need to figure out the name of the directory we're dealing 
     #with. still.basic is always the latest version of LibreOffice so that means the extracted directory name can change
     #as the version number changes.
-    maybeLOdir=$(find . -type d -name "libreoffice*");
+    maybeLOdir=$(find . -type d -name "libreoffice*.*" -maxdepth 3);
     printf "What I found for maybeLOdir is : %s\n" "${maybeLOdir}"
     if [ -z "${maybeLOdir}" ]; then
       echo "I was unable to find the latest libreoffice directory in the extracted contents.";
@@ -183,8 +183,8 @@ hooks:
     cd "${PLATFORM_CACHE_DIR}/chromium" 
       
     bash "${PLATFORM_CACHE_DIR}/chromium/update.sh"
-    printf "contents of %s:" "${PLATFORM_CACHE_DIR}/chromium"
-    ls -al "${PLATFORM_CACHE_DIR}/chromium"
+    #printf "contents of %s:" "${PLATFORM_CACHE_DIR}/chromium"
+    #ls -al "${PLATFORM_CACHE_DIR}/chromium"
     #now we need to copy the contents of the symlink "latest" over into the app directory
     mkdir -p "${PLATFORM_APP_DIR}/.global/bin/chromium"
     cp -Rvf "${PLATFORM_CACHE_DIR}/chromium/latest/." "${PLATFORM_APP_DIR}/.global/bin/chromium"  
