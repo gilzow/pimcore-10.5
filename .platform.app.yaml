@@ -82,7 +82,7 @@ disk: 7168
 hooks:
   build: |
     set -e
-      
+    exifVersion="12.47"  
     bash install-redis.sh 5.3.7
 
     # This is needed for the installer in the deploy hook.
@@ -124,13 +124,24 @@ hooks:
       #now let's delete the AppImage to free up some space
       rm LibreOffice-still.basic-x86_64.AppImage
     fi
-      
-    # now copy the contents of squashfs-root/opt/libreoffice7.3/program/ to /app/.libreoffice/bin/
+     
+    #now that we've extracted the contents of the image, we need to figure out the name of the directory we're dealing 
+    #with. still.basic is always the latest version of LibreOffice so that means the extracted directory name can change
+    #as the version number changes.
+    maybeLOdir=$(find . -type d -name "libreoffice*");
+    if [[ -z "${maybeLOdir}" ]]; then
+      echo "I was unable to find the latest libreoffice directory in the extracted contents.";
+      exit 1;
+    else 
+      libreOfficeDir=$(basename "${maybeLOdir}")
+    fi
+
+    # now copy the contents of squashfs-root/opt/"$libreOfficeDir".3/program/ to /app/.libreoffice/bin/
     echo "Copying libreoffice files to ${PLATFORM_APP_DIR}/.libreoffice/bin... Files copied: "
     # @todo, the libreoffice directory name can and WILL Change as the version changes. We need to either designate a
     # specic version, and then allow for a manged upgrade, or check the name of the directory after we run the 
     # --appimage-extract command to find out the name of the directory we're working with.
-    cp -Rvf ./squashfs-root/opt/libreoffice7.3/program/* "${PLATFORM_APP_DIR}/.libreoffice/bin/" | wc -l
+    cp -Rvf ./squashfs-root/opt/${libreOfficeDir}/program/* "${PLATFORM_APP_DIR}/.libreoffice/bin/" | wc -l
       
     #add our libreoffice path to PATH
     echo 'export PATH="'$PLATFORM_APP_DIR'/.libreoffice/bin${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
@@ -143,13 +154,14 @@ hooks:
     cp -vf "${PLATFORM_CACHE_DIR}/facedetect" "${PLATFORM_APP_DIR}/.libreoffice/bin/facedetect"
 
     #next is exiftool
-    if [ ! -d "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47" ]; then
-      wget -P "${PLATFORM_CACHE_DIR}" https://exiftool.org/Image-ExifTool-12.47.tar.gz
+    if [ ! -d "${PLATFORM_CACHE_DIR}/Image-ExifTool-${exifVersion}" ]; then
+      echo "retrieving https://exiftool.org/Image-ExifTool-${exifVersion}.tar.gz"
+      wget -P "${PLATFORM_CACHE_DIR}" https://exiftool.org/Image-ExifTool-${exifVersion}.tar.gz
       cd "${PLATFORM_CACHE_DIR}"
-      tar -xvf Image-ExifTool-12.47.tar.gz
+      tar -xvf Image-ExifTool-${exifVersion}.tar.gz
       # get rid of the archive since we've cached the contents
-      rm "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47.tar.gz"
-      cd "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47/"
+      rm "${PLATFORM_CACHE_DIR}/Image-ExifTool-${exifVersion}.tar.gz"
+      cd "${PLATFORM_CACHE_DIR}/Image-ExifTool-${exifVersion}/"
       perl Makefile.PL
     fi
     
