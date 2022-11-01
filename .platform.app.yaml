@@ -88,8 +88,8 @@ disk: 7168
 hooks:
   build: |
     set -e
-    echo "How much space is build cache taking up?"
-    du -sh "${PLATFORM_CACHE_DIR}"
+    echo "How much space is being used?"
+    df -h
       
     bash install-redis.sh 5.3.7
 
@@ -102,7 +102,7 @@ hooks:
     ./platform-scripts/install-brew-pack.sh gcc graphviz exiftool poppler poppler-utils ghostscript zopfli 
     echo "just finished doing brew installs"
     echo "How much space is build cache taking up?"
-    du -sh "${PLATFORM_CACHE_DIR}"  
+    df -h 
     # Make sure we have our target application directory created
     if [ ! -d "${PLATFORM_APP_DIR}/.libreoffice" ]; then
       echo "creating libreoffice directory"
@@ -138,7 +138,7 @@ hooks:
      
     echo "Just finished getting libreoffice."
     echo "How much space is build cache taking up?"
-    du -sh "${PLATFORM_CACHE_DIR}"
+    df -h 
       
     # now copy the contents of squashfs-root/opt/libreoffice7.3/program/ to /app/.libreoffice/bin/
     echo "Copying libreoffice files to ${PLATFORM_APP_DIR}/.libreoffice/bin... Files copied: "
@@ -152,7 +152,7 @@ hooks:
 
     echo "just finished up with libreoffice."
     echo "How much space is build cache taking up?"
-    du -sh "${PLATFORM_CACHE_DIR}"
+    df -h 
       
     #next up is facedetect. https://gitlab.com/wavexx/facedetect/-/tree/master/
     if [ ! -f "${PLATFORM_CACHE_DIR}/facedetect" ]; then
@@ -163,7 +163,7 @@ hooks:
 
     echo "Just finished facedetect."
     echo "How much space is build cache taking up?"
-    du -sh "${PLATFORM_CACHE_DIR}"
+    df -h 
       
     #next is exiftool
     if [ ! -d "${PLATFORM_CACHE_DIR}/Image-ExifTool-12.47" ]; then
@@ -178,7 +178,7 @@ hooks:
       
     echo "Just finished exiftool."
     echo "How much space is build cache taking up?"
-    du -sh "${PLATFORM_CACHE_DIR}"
+    df -h
     
     #make sure we have a bin in .global
     mkdir -p "${PLATFORM_APP_DIR}/.global/bin"
@@ -204,7 +204,7 @@ hooks:
 
     echo "Just finished chromium."
     echo "How much space is build cache taking up?"
-    du -sh "${PLATFORM_CACHE_DIR}"
+    df -h
       
     # And last we have updating ImageMagik to v7
     if [ ! -d "${PLATFORM_CACHE_DIR}/magick" ]; then 
@@ -245,8 +245,8 @@ hooks:
 
     echo "Just finished imagick."
     echo "How much space is build cache taking up?"
-    du -sh "${PLATFORM_CACHE_DIR}"
-
+    df -h 
+    
   deploy: |
     if [ ! -f public/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
