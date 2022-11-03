@@ -239,7 +239,7 @@ hooks:
     echo 'export PATH="'$PLATFORM_APP_DIR'/.imagick/bin/${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
     
     # last up, we need to move the composer autoload_namespace
-    composer dump-autoload --optimize --apcu --no-dev
+    cd $PLATFORM_APP_DIR && composer dump-autoload --optimize --apcu --no-dev
   deploy: |
     if [ ! -f public/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
