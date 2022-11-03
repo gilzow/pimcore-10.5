@@ -240,9 +240,9 @@ hooks:
     
     # last up, we need to move the composer autoload_namespace
     cd $PLATFORM_APP_DIR
-    cp -Rvf ./vendor/composer/* ./var/composer-temp
-    rm -rf ./vendor/composer
-    ln -s ./var/composer-temp ./vendor/composer
+
+    mv ./vendor/composer ./vendor/composer-temp
+    ln -sf ./var/composer-temp ./vendor/composer
 
   deploy: |
     if [ ! -f public/var/.platform.installed ]; then
@@ -289,7 +289,8 @@ hooks:
       
     # Rebuild custom layouts
     ./bin/console pimcore:deployment:custom-layouts-rebuild --create-custom-layouts --delete-custom-layouts --no-interaction
-      
+    
+    cp -Rvf ./vendor/composer-temp/* ./var/composer-temp  
     # Dump autoload to update classmap with new classes of pimcore
     composer dump-autoload --optimize --apcu --no-dev
       
