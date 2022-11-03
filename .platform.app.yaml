@@ -242,7 +242,7 @@ hooks:
     cd $PLATFORM_APP_DIR
 
     mv ./vendor/composer ./vendor/composer-temp
-    ln -sf ./var/composer-temp ./vendor/composer
+    ln -sf $PLATFORM_APP_DIR/var/composer-temp $PLATFORM_APP_DIR/vendor/composer
 
   deploy: |
     if [ ! -f public/var/.platform.installed ]; then
