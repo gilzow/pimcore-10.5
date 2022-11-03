@@ -237,7 +237,9 @@ hooks:
     #last add PATH to PATH
     echo "Adding imagick bin path to PATH"  
     echo 'export PATH="'$PLATFORM_APP_DIR'/.imagick/bin/${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
-
+    
+    # last up, we need to move the composer autoload_namespace
+    composer dump-autoload --optimize --apcu --no-dev
   deploy: |
     if [ ! -f public/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
@@ -285,7 +287,7 @@ hooks:
     ./bin/console pimcore:deployment:custom-layouts-rebuild --create-custom-layouts --delete-custom-layouts --no-interaction
       
     # Dump autoload to update classmap with new classes of pimcore
-    composer dump-autoload --optimize --apcu --no-dev
+    #composer dump-autoload --optimize --apcu --no-dev
       
     # Install assets from all bundles
     ./bin/console assets:install --symlink --relative
