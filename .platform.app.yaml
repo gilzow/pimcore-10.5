@@ -248,7 +248,7 @@ hooks:
   deploy: |
     # we need to move the files out of /vendor/composer-temp into our file mount for composer
     cp -Rvf ./vendor/composer-temp/* ./var/composer-temp 
-    
+    #
     if [ ! -f public/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         # These values are for the inital setup only.  You really need to change them
