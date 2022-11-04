@@ -250,7 +250,7 @@ hooks:
 
   deploy: |
     # since we didnt do it in the build, we'll try running composer now into our vendor mount
-    composer install --no-ansi --no-progress --prefer-dist --no-scripts
+    composer install --no-ansi --no-progress --prefer-dist --no-scripts --cache-read-only
     #
     if [ ! -f public/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
