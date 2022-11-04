@@ -242,9 +242,13 @@ hooks:
     cd $PLATFORM_APP_DIR
 
     mv ./vendor/composer ./vendor/composer-temp
-    ln -sf $PLATFORM_APP_DIR/var/composer-temp $PLATFORM_APP_DIR/vendor/composer
+    cd ./vendor && ln -sf $PLATFORM_APP_DIR/var/composer-temp composer
+
 
   deploy: |
+    # we need to move the files out of /vendor/composer-temp into our file mount for composer
+    cp -Rvf ./vendor/composer-temp/* ./var/composer-temp 
+    
     if [ ! -f public/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         # These values are for the inital setup only.  You really need to change them
@@ -290,7 +294,6 @@ hooks:
     # Rebuild custom layouts
     ./bin/console pimcore:deployment:custom-layouts-rebuild --create-custom-layouts --delete-custom-layouts --no-interaction
     
-    cp -Rvf ./vendor/composer-temp/* ./var/composer-temp  
     # Dump autoload to update classmap with new classes of pimcore
     composer dump-autoload --optimize --apcu --no-dev
       
