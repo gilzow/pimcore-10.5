@@ -70,7 +70,7 @@ mounts:
     "/config/local":
       source: "local"
       source_path: "config_local"
-    "/vendor"
+    "/vendor":
       source: "local"
       source_path: "vendor"
 
@@ -287,7 +287,6 @@ hooks:
       bin/console pimcore:bundle:install "${BUNDLE}" --no-interaction --no-post-change-commands
     done
   
-    # a fake commit
     # Migrate doctrine migrations
     ./bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
       
