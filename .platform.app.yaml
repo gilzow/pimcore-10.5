@@ -249,7 +249,7 @@ hooks:
     
     #prep composer for read-only
     echo "Setting composer config to read only cache"
-    composer config -g cache-read-only true
+    echo "COMPOSER_CACHE_READ_ONLY=1" >> $PLATFORM_APP_DIR/.environment
 
   deploy: |
     # since we didnt do it in the build, we'll try running composer now into our vendor mount
