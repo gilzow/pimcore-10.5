@@ -248,10 +248,12 @@ hooks:
     #cd ./vendor && ln -sf $PLATFORM_APP_DIR/var/composer-temp composer
     
     #prep composer for read-only
+    echo "Setting composer config to read only cache"
     composer config -g cache-read-only true
 
   deploy: |
     # since we didnt do it in the build, we'll try running composer now into our vendor mount
+    echo "Running composer install now..."
     composer install --no-ansi --no-progress --prefer-dist --no-scripts
     #
     if [ ! -f public/var/.platform.installed ]; then
