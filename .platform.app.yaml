@@ -251,6 +251,44 @@ hooks:
 
     # Clear env cached
     ./bin/console cache:clear
+      
+    # get all bundles which are enabled and installable but not yet installed
+    BUNDLES="$(
+      bin/console pimcore:bundle:list --json \
+        | jq --raw-output '
+          [
+            .[]
+            | select(
+              .Enabled == true
+              and .Installed == false
+              and .Installable == true
+            )
+            | .Bundle
+          ]
+          | join(" ")
+        '
+    )"
+  
+    # Install Pimcore bundles
+    for BUNDLE in ${BUNDLES}; do
+      bin/console pimcore:bundle:install "${BUNDLE}" --no-interaction --no-post-change-commands
+    done
+  
+  
+    # Migrate doctrine migrations
+    ./bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+      
+    # Rebuild class definitions
+    ./bin/console pimcore:deployment:classes-rebuild --create-classes --delete-classes --no-interaction
+      
+    # Rebuild custom layouts
+    ./bin/console pimcore:deployment:custom-layouts-rebuild --create-custom-layouts --delete-custom-layouts --no-interaction
+     
+    # Install assets from all bundles
+    ./bin/console assets:install --symlink --relative
+      
+    # Warmup cache
+    ./bin/console cache:warmup
 
 # The configuration of scheduled execution.
 crons:
