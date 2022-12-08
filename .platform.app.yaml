@@ -283,10 +283,7 @@ hooks:
       
     # Rebuild custom layouts
     ./bin/console pimcore:deployment:custom-layouts-rebuild --create-custom-layouts --delete-custom-layouts --no-interaction
-      
-    # Dump autoload to update classmap with new classes of pimcore
-    composer dump-autoload --optimize --apcu --no-dev
-      
+     
     # Install assets from all bundles
     ./bin/console assets:install --symlink --relative
       
