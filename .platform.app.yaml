@@ -36,6 +36,7 @@ runtime:
     - imagick
     - fileinfo
     - apcu
+    - sodium
 
 variables:
   php:
