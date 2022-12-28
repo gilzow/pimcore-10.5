@@ -5,12 +5,16 @@
   "config": {
     "optimize-autoloader": true,
     "sort-packages": true,
-    "process-timeout": 0
+    "process-timeout": 0,
+    "allow-plugins": {
+      "eloquent/composer-npm-bridge": true
+    }
   },
   "require": {
-    "pimcore/pimcore": "^10.4",
     "doctrine/orm": "^2.7",
-    "platformsh/config-reader": "^2.3"
+    "pimcore/pimcore": "^10.4",
+    "platformsh/config-reader": "^2.3",
+    "spiritix/php-chrome-html2pdf": "^1.7.2"
   },
   "require-dev": {
     "codeception/codeception": "^4.1.12"
