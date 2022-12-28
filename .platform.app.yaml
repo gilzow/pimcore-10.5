@@ -294,4 +294,4 @@ hooks:
 crons:
     pimcore_cron:
         spec: "*/19 * * * *"
-        cmd: "bin/console maintenance"
+        cmd: "bin/console maintenance --async"
