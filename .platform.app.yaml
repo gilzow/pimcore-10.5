@@ -90,10 +90,10 @@ web:
           allow: true
           passthru: '/var/assets$asset'
           expires: 2w
-        '(?<thumbnail>.*/(image|video)-thumb__\d+__.*)':
-          allow: true
-          passthru: '/var/tmp/thumbnails$thumbnail'
-          expires: 2w
+        '(?<thumbnail>.*/(image|video)-thumb__(?<dirnum>\d+)__.*)':
+            allow: true
+            passthru: '/var/tmp/thumbnails/$dirnum$thumbnail'
+            expires: 2w
 
 # The size of the persistent disk of the application (in MB).
 disk: 7168
