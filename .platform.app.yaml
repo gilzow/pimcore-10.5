@@ -86,6 +86,14 @@ web:
           allow: true
         '^/static/(?<resource>.*)$':
           allow: true
+        '^(?!/admin)(?<asset>(.+?)\.((?:css|js)(?:\.map)?|jpe?g|gif|png|svgz?|eps|exe|gz|zip|mp\d|m4a|ogg|ogv|webm|pdf|docx?|xlsx?|pptx?))$':
+          allow: true
+          passthru: '/var/assets$asset'
+          expires: 2w
+        '(?<thumbnail>.*/(image|video)-thumb__\d+__.*)':
+          allow: true
+          passthru: '/var/tmp/thumbnails$thumbnail'
+          expires: 2w
 
 # The size of the persistent disk of the application (in MB).
 disk: 7168
