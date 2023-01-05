@@ -87,9 +87,9 @@ web:
         '^/static/(?<resource>.*)$':
           allow: true
         '(?<thumbnail>.*/(image|video)-thumb__(?<dirnum>\d+)__.*)':
-            allow: true
-            passthru: '/var/tmp/thumbnails/$dirnum$thumbnail'
-            expires: 2w
+          allow: true
+          passthru: '/var/tmp/thumbnails$thumbnail'
+          expires: 2w
         '^(?!/admin)(?<asset>(.+?)\.((?:css|js)(?:\.map)?|jpe?g|gif|png|svgz?|eps|exe|gz|zip|mp\d|m4a|ogg|ogv|webm|pdf|docx?|xlsx?|pptx?))$':
           allow: true
           passthru: '/var/assets$asset'
