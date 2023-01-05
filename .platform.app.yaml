@@ -90,15 +90,11 @@ web:
           allow: true
           passthru: '/var/tmp/thumbnails$thumbnail'
           expires: 2w
-#        '^(?!/admin)(?<asset>(.+?)\.((?:css|js)(?:\.map)?|jpe?g|gif|png|svgz?|eps|exe|gz|zip|mp\d|m4a|ogg|ogv|webm|pdf|docx?|xlsx?|pptx?))$':
-#          allow: true
-#          passthru: '/var/assets$asset'
-#          expires: 2w
-#    '/var/tmp/thumbnails':
-#        allow: true
-#        scripts: false
-#        root: public/var/tmp/thumbnails
-#        passthru: '/index.html'
+        '^(?!/admin)(?<asset>(.+?)\.((?:css|js)(?:\.map)?|jpe?g|gif|png|svgz?|eps|exe|gz|zip|mp\d|m4a|ogg|ogv|webm|pdf|docx?|xlsx?|pptx?))$':
+          allow: true
+          passthru: '/var/assets$asset'
+          expires: 2w
+
 # The size of the persistent disk of the application (in MB).
 disk: 7168
 
