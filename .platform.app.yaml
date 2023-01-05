@@ -97,6 +97,7 @@ web:
     '/var/tmp/thumbnails':
         allow: true
         scripts: false
+        root: public/var/tmp/thumbnails
         passthru: '/index.html'
 # The size of the persistent disk of the application (in MB).
 disk: 7168
