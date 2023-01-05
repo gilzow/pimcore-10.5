@@ -80,21 +80,19 @@ web:
       passthru: "/index.php"
       allow: true
       rules:
-        '^/videos/(?<resource>.*)$':
-          allow: true
-        '^/img/(?<resource>.*)$':
-          allow: true
-        '^/static/(?<resource>.*)$':
-          allow: true
+#        '^/videos/(?<resource>.*)$':
+#          allow: true
+#        '^/img/(?<resource>.*)$':
+#          allow: true
+#        '^/static/(?<resource>.*)$':
+#          allow: true
         '^(?<thumbnail>(?!/var/tmp/thumbnails).*/(image|video)-thumb__(\d+)__.*)$':
           allow: true
           passthru: '/var/tmp/thumbnails$thumbnail'
           expires: 2w
         '^(?!/admin)(?<asset>(.+?)\.((?:css|js)(?:\.map)?|jpe?g|gif|png|svgz?|eps|exe|gz|zip|mp\d|m4a|ogg|ogv|webm|pdf|docx?|xlsx?|pptx?))$':
           allow: true
-          passthru:
-            - '/var/assets$asset'
-            - '/index.php'
+          passthru: '/var/assets$asset'
           expires: 2w
 
 # The size of the persistent disk of the application (in MB).
