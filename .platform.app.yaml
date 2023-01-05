@@ -94,11 +94,11 @@ web:
 #          allow: true
 #          passthru: '/var/assets$asset'
 #          expires: 2w
-    '/var/tmp/thumbnails':
-        allow: true
-        scripts: false
-        root: public/var/tmp/thumbnails
-        passthru: '/index.html'
+#    '/var/tmp/thumbnails':
+#        allow: true
+#        scripts: false
+#        root: public/var/tmp/thumbnails
+#        passthru: '/index.html'
 # The size of the persistent disk of the application (in MB).
 disk: 7168
 
