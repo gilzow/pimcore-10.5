@@ -94,6 +94,8 @@ web:
           allow: true
           passthru: '/var/assets$asset'
           expires: 2w
+    '/var/assets':
+        scripts: false
 
 # The size of the persistent disk of the application (in MB).
 disk: 7168
