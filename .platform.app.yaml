@@ -86,7 +86,7 @@ web:
 #          allow: true
 #        '^/static/(?<resource>.*)$':
 #          allow: true
-        '^(?<thumbnail>(?!/var/tmp).*/(image|video)-thumb__(\d+)__.*)$':
+        '^(?!/var/tmp)(?<thumbnail>.*/(image|video)-thumb__[\d+]__.*)$':
           allow: true
           #passthru: '/var/tmp/thumbnails$thumbnail'
           passthru: '/index.html'
