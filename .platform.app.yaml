@@ -100,6 +100,9 @@ web:
         # https://tools.ietf.org/html/rfc5785
         '/\.(?!well-known/)':
           allow: false
+        '(?:\.(?:bak|conf(ig)?|dist|fla|in[ci]|log|psd|sh|sql|sw[op])|~)$':
+          allow: false
+
     '/var/assets':
         scripts: false
         rules:
