@@ -102,6 +102,9 @@ web:
           allow: false
     '/var/assets':
         scripts: false
+        rules:
+            '\.php$':
+                allow: false
 
 # The size of the persistent disk of the application (in MB).
 disk: 7168
