@@ -88,7 +88,8 @@ web:
 #          allow: true
         '^(?<thumbnail>(?!/var/tmp).*/(image|video)-thumb__(\d+)__.*)$':
           allow: true
-          passthru: '/var/tmp/thumbnails$thumbnail'
+          #passthru: '/var/tmp/thumbnails$thumbnail'
+          passthru: '/index.html'
           expires: 2w
         '^(?!/admin|/var)(?<asset>(.+?)\.((?:css|js)(?:\.map)?|jpe?g|gif|png|svgz?|eps|exe|gz|zip|mp\d|m4a|ogg|ogv|webm|pdf|docx?|xlsx?|pptx?))$':
           allow: true
