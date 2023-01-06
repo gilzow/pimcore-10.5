@@ -86,7 +86,7 @@ web:
 #          allow: true
 #        '^/static/(?<resource>.*)$':
 #          allow: true
-        '^(?<thumbnail>(?!/var).*/(image|video)-thumb__(\d+)__.*)$':
+        '^(?<thumbnail>(?!/var/tmp).*/(image|video)-thumb__(\d+)__.*)$':
           allow: true
           passthru: '/var/tmp/thumbnails$thumbnail'
           expires: 2w
