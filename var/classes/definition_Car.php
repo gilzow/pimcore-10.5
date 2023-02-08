@@ -4,7 +4,7 @@
  * Inheritance: yes
  * Variants: no
  *
- * Fields Summary:
+ * Fields Summary: Test Change
  * - localizedfields [localizedfields]
  * -- name [input]
  * -- description [wysiwyg]
