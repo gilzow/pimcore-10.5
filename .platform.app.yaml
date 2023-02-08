@@ -299,7 +299,7 @@ hooks:
   
   
     # Migrate doctrine migrations
-    ./bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+    #./bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
       
     # Rebuild class definitions
     ./bin/console pimcore:deployment:classes-rebuild --create-classes --delete-classes --no-interaction
