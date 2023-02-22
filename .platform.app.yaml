@@ -262,11 +262,11 @@ hooks:
     echo 'export PATH="'$PLATFORM_APP_DIR'/.imagick/bin/${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
       
     # we need to temporarily move our var/classes so we can rsync them back into the mount 
-    mv var/classes varclassestmp
+    mv "${PLATFORM_APP_DIR}/var/classes" "${PLATFORM_APP_DIR}/varclassestmp"
 
   deploy: |
     #sync contents of varclassestmp back into var/classes mount
-    rsync -av varclassestmp/ var/classes/ 
+    rsync -av "${PLATFORM_APP_DIR}/varclassestmp/" "${PLATFORM_APP_DIR}/var/classes/" 
     
     if [ ! -f public/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
