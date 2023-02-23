@@ -57,18 +57,18 @@ variables:
 mounts:
     # According to https://pimcore.com/docs/pimcore/current/Development_Documentation/Installation_and_Upgrade/System_Setup_and_Hosting/File_Permissions.html
     # Pimcore should only need write access to ./var and ./public/var
-    "/var":
+    "var":
       source: "local"
       source_path: "var"
-    "/public/var":
+    "public/var":
       source: "local"
       source_path: "public_var"
     #The link above doesn't mention /public/bundles, but in testing we DO need it to be writable.
-    "/public/bundles":
+    "public/bundles":
       source: "local"
       source_path: "web_bundles"
     #similar to above, though it's not mentioned, something needs to write database.yaml to this location
-    "/config/local":
+    "config/local":
       source: "local"
       source_path: "config_local"
 
@@ -76,20 +76,42 @@ mounts:
 web:
   locations:
     '/':
-      root: public
+      root: "public"
       passthru: "/index.php"
       allow: true
       rules:
-        '^/videos/(?<resource>.*)$':
+#        '^/videos/(?<resource>.*)$':
+#          allow: true
+#        '^/img/(?<resource>.*)$':
+#          allow: true
+#        '^/static/(?<resource>.*)$':
+#          allow: true
+        '^(?!/var/tmp)(?<thumbnail>.*/(image|video)-thumb__[\d+]__.*)$':
           allow: true
-        '^/img/(?<resource>.*)$':
+          passthru: '/var/tmp/thumbnails$thumbnail'
+          expires: 2w
+        '^(?!/admin|/var)(?<asset>(.+?)\.((?:css|js)(?:\.map)?|jpe?g|gif|png|svgz?|eps|exe|gz|zip|mp\d|m4a|ogg|ogv|webm|pdf|docx?|xlsx?|pptx?))$':
           allow: true
-        '^/static/(?<resource>.*)$':
-          allow: true
+          passthru: '/var/assets$asset'
+          expires: 2w
+        # b) Prevent clients from accessing hidden files (starting with a dot)
+        # Access to `/.well-known/` is allowed.
+        # https://www.mnot.net/blog/2010/04/07/well-known
+        # https://tools.ietf.org/html/rfc5785
+        '/\.(?!well-known/)':
+          allow: false
+        '(?:\.(?:bak|conf(ig)?|dist|fla|in[ci]|log|psd|sh|sql|sw[op])|~)$':
+          allow: false
+
+    '/var/assets':
+        scripts: false
+        rules:
+            '\.php$':
+                allow: false
 
 # The size of the persistent disk of the application (in MB).
 disk: 7168
-
+# fake
 # The hooks executed at various points in the lifecycle of the application.
 hooks:
   build: |
@@ -238,8 +260,14 @@ hooks:
     #last add PATH to PATH
     echo "Adding imagick bin path to PATH"  
     echo 'export PATH="'$PLATFORM_APP_DIR'/.imagick/bin/${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
+      
+    # we need to temporarily move our var/classes so we can rsync them back into the mount 
+    mv "${PLATFORM_APP_DIR}/var/classes" "${PLATFORM_APP_DIR}/varclassestmp"
 
   deploy: |
+    #sync contents of varclassestmp back into var/classes mount
+    rsync -av "${PLATFORM_APP_DIR}/varclassestmp/" "${PLATFORM_APP_DIR}/var/classes/" 
+    
     if [ ! -f public/var/.platform.installed ]; then
         platform sql "ALTER DATABASE CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         # These values are for the inital setup only.  You really need to change them
