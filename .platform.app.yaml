@@ -116,7 +116,7 @@ disk: 7168
 hooks:
   build: |
     set -e
-    exifVersion="12.47"  
+    exifVersion="12.60"  
     bash install-redis.sh 5.3.7
 
     # This is needed for the installer in the deploy hook.
@@ -145,7 +145,9 @@ hooks:
       # image hasnt been extracted. do we even have the image?
       if [ ! -f LibreOffice-still.basic-x86_64.AppImage ]; then
         echo "downloading LibreOffice appimage" 
-        wget https://appimage.sys42.eu/LibreOffice-still.basic-x86_64.AppImage
+        # @todo this location has a tendency to change. This should be an environmental variable that can be changed
+        # without having to update code
+        wget https://appimages.libreitalia.org/LibreOffice-still.basic-x86_64.AppImage
       fi
      
       # make sure we can execute it 
@@ -251,12 +253,18 @@ hooks:
     # make sure we have a directory in the app location
     echo "Creating imagick directory in app directory..."
     mkdir -p "${PLATFORM_APP_DIR}/.imagick/bin"
-    mkdir -p "${PLATFORM_APP_DIR}/.imagick/lib"  
+    mkdir -p "${PLATFORM_APP_DIR}/.imagick/lib"
+    # ImageMagick wants its config files in certain locations so we'll copy them over
+    mkdir -p "${PLATFORM_APP_DIR}/.config/ImageMagick"  
       
     #now copy our files from squashfs-root/usr/bin/ to 
     printf "Copying imagick files from %s to %s... \n" "${PLATFORM_CACHE_DIR}/magick/squashfs-root/usr/" "${PLATFORM_APP_DIR}/.imagick/"
     cp -Rvf ./squashfs-root/usr/bin/* "${PLATFORM_APP_DIR}/.imagick/bin"
     cp -Rvf ./squashfs-root/usr/lib/* "${PLATFORM_APP_DIR}/.imagick/lib"
+    #And copy the configuration files from squashfs-root/etc/ImageMagick-7/ to /app/.config/ImageMagick
+    printf "Copying imagick configuration files from %s to %s... \n" "${PLATFORM_CACHE_DIR}/magick/squashfs-root/usr/etc/ImageMagick-7" "${PLATFORM_APP_DIR}/.config/ImageMagick"
+    cp -Rvf ./squashfs-root/usr/etc/ImageMagick-7/* "${PLATFORM_APP_DIR}/.config/ImageMagick"
+      
     #last add PATH to PATH
     echo "Adding imagick bin path to PATH"  
     echo 'export PATH="'$PLATFORM_APP_DIR'/.imagick/bin/${PATH+:$PATH}";' >> "${PLATFORM_APP_DIR}/.environment"
